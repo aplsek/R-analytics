@@ -1,4 +1,9 @@
 
+types <- c("g1-young", "g1evac", "g1full", "g1-young_to-spaceexhausted", "g1-young_initial-mark_to-spaceexhausted", "g1-young_initial-mark", "g1-mixed")
+colors <- c("blue", "green", "red", "dark red", "dark red", "yellow", "brown")
+GC_TYPES <-  data.frame(colors,types)
+
+
 # Plot GC Pause Time Distribution
 plotPauseHisto <- function (data.gc) {
   plot.title <- "GC Pause Time Distribution"
@@ -10,27 +15,52 @@ plotPauseHisto <- function (data.gc) {
   })   
 }
 
+plotGC <- function (data.gc) {
+  title <-"GC Timeline"
+  x_lab = "Elapsed Time (s)"
+  y_lab = "GC Pause Time Time(s)"
+  
+  plot(0,0,xlim = c(-10,10),ylim = c(-10,10),type = "n")
+  
+  with(data.gc, {
+    for (type in GC_TYPES) {
+      gc.p <- pause.time[gc.type == type]
+      gc.t <- timestamp[gc.type == type]
+      color <- GC_TYPES$colors[GC_TYPES$types == type]
+      
+      lines(gc.p,
+            gc.t,col=color,type="h")
+    }
+  }
+}
+
+plotGCtype <- function(data.gc) {
 with(data.gc, {
-  plot.title <-"GC Timeline"
+  title <-"GC Timeline"
   gc.minor <- pause.time[gc.type == "g1evac"]
+  gc.minor.t <- timestamp[gc.type == "g1evac"]
   gc.full <- pause.time[gc.type == "g1young"]
+  gc.full.t <- timestamp[gc.type == "g1young"]
+  
+  #print(gc.full)
+  #print(gc.full.t)
   
   # Plot bars for full GC pause time 
-  plot(sec.to.hours(timestamp[gc.type == "full"]),
-       gc.full*1000.0,
-       xlab="Elapsed Time (hrs)",
-       ylab="GC Pause Time Time(ms)",type='h',
-       main=plot.title,col="red",ylim=c(0,1000),xlim=c(0,18))
+  plot(gc.full.t,
+       gc.full,
+       xlab=x_lab,
+       ylab=y_lab,type='h',
+       main=title,col="blue")
   
   # Plot bars for minor GC pause time
-  lines(sec.to.hours(timestamp[gc.type == "minor"]),
-        gc.minor*1000.0,col="dark green",type="h")
+  lines(gc.minor.t,
+        gc.minor,col="dark green",type="h")
   
   # Set tick marks for every hour
   axis(1,seq(0,18,1))
   grid()
 })
-
+}
 
 plotPause <- function (data.gc) {
   plot.title <- "GC Pauses Timeline"
@@ -61,8 +91,8 @@ plot.survivor <- function(data.gc) {
   
   with(data.gc, {
     
-    x <- sec.to.hours(timestamp)
-    y <- kb.to.mb(young.end)
+    x <- timestamp
+    y <- young.end
     plot(x,y,
          xlab=xtitle,ylab=ytitle,
          main=plot.title,type='o',col='blue')
