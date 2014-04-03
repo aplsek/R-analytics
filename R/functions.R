@@ -1,62 +1,71 @@
 #if(!exists(headers, mode="function")) source("R/constants.R")
 source("R/constants.R")
+source("R/utils.R")
 
 
-
-add <- function(value,name ) {
-  headers <<- c(headers,name)
-  stats <<- c(stats,value)
-  
-  headers
-}
-
-
-round_dec <- function(x) {
-  res = round(as.numeric(x),ROUND)
-  return(res)
-}
-
-int <- function(x) {
-  res = as.integer(x)
-  return(res)
-}
 
 
 
 ###########################################
 
-print_summary <- function(data.gc) {
+
+
+
+printStats <- function() {
+  #rownames(df) <- df[,1]
+  #  colnames(df) <- c("GCType", "CNT", "time", "Avg", "Max")
+  #df[1] <- NULL
+  #df <- df[,-1,drop=FALSE]
   
-  stats = rep(NA, 3)
-  headers = c("PauseTime", "AvgPause", "MaxPause", "#Gc-Pause",
-              "RunTime", "GC-Throughput", "GC Full" )
-  
+  print(df)
+}
+
+statsByGCType <-function(data.gc) {
+  initSummary()
   attach(data.gc)
-  #by(pause.time,gc.type,mean)
-  #by(pause.time,gc.type,sd)    
-  by(pause.time,gc.type,length)  # number of each GC events
-  
-  #summary(diff(timestamp))
-  
-  total_pause = sum(pause.time, na.rm = TRUE)            # Time spent in GC
-  avg_pause = mean(pause.time, na.rm = TRUE) 
-  max_pause = max(pause.time, na.rm = TRUE) 
-  pause_count = int(length(pause.time)) 
-  run_time=max(timestamp, na.rm = TRUE) - min(timestamp, na.rm = TRUE)
-  gc_thrpt=total_pause*100.0/run_time                 # Percentage of time spent in GC
-  
-  gc.full <- pause.time[gc.type == "full"]
-  gc.full.cnt = length(gc.full)
-  
-  stats = c (total_pause, avg_pause, max_pause, pause_count, run_time, gc_thrpt, gc.full.cnt)
-  stats = round_dec(stats)
-  #stats[1] = total_pause
-  #stats[2] = run_time
-  #stats[3] = gc_thrpt
-  
-  output = data.frame(stats, row.names=headers)
-  print(output)
+  for (type in GC_TYPES) {
+    pause_count = int(length(pause.time[gc.type == type])) 
+    if (pause_count != 0) {
+      gc.type.pause = round_dec(sum(pause.time[gc.type == type], na.rm = TRUE) )
+      gc.type.avg = round_dec(mean(pause.time[gc.type == type], na.rm = TRUE) )
+      gc.type.max = round_dec(max(pause.time[gc.type == type], na.rm = TRUE) )       
+      addRow(c(type, pause_count, gc.type.pause, gc.type.avg, gc.type.max))
+    } 
+  }
   detach(data.gc)
   
   
+  colnames(df) <<- c("GCType", "Cnt", "Time [s]", "Avg [s]", "Max [s]")
+  printStats()
 }
+
+
+
+statsMain <- function(data.gc) {
+  initSummary()
+  attach(data.gc)
+  
+  total_pause = round_dec(sum(pause.time, na.rm = TRUE))            # Time spent in GC
+  avg_pause = round_dec(mean(pause.time, na.rm = TRUE)) 
+  max_pause = round_dec(max(pause.time, na.rm = TRUE)) 
+  pause_count = int(length(pause.time)) 
+  run_time=round_dec(max(timestamp, na.rm = TRUE) - min(timestamp, na.rm = TRUE))
+  gc_thrpt=round_dec(total_pause*100.0/run_time)                 # Percentage of time spent in GC
+  
+  addRow(c("PauseTime [s]", total_pause))
+  addRow(c("AvgPause [s]", avg_pause))
+  addRow(c("MaxPause [s]", max_pause))
+  addRow(c("#Gc-Pause", pause_count))
+  addRow(c("Run Time[s]", run_time))
+  addRow(c("GC-Throughput [%]", gc_thrpt))
+  
+  detach(data.gc)
+  printStats()
+}
+
+
+computeStats <- function(data.gc) {
+  statsMain(data.gc)
+  statsByGCType(data.gc) 
+}
+
