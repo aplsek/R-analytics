@@ -1,0 +1,23 @@
+
+CWD=`pwd`
+
+R_SRC=$CWD/R
+
+INPUT=$1
+ID=$2
+
+REPORTS_DIR=reports
+REPDIR=$REPORTS_DIR/$ID
+REPORT_TEMPLATE=$CWD/report.Rmd
+
+REPORT_NAME=report_${ID}.html
+
+mkdir -p $REPDIR
+
+cd $REPDIR
+Rscript  $R_SRC/knitr.R $REPORT_TEMPLATE $INPUT $ID $REPORT_NAME
+
+
+cd $CWD
+
+

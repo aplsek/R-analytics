@@ -9,8 +9,12 @@ source("R/plot_functions.R")
 #####
 
 #### RUN
+
+args <- commandArgs(trailingOnly = TRUE)
+
+print(args)
+data.file <- args[1]
 #data.file <- "input.txt"
-data.file <- "C:/Users/aplsek.ST-USERS/workspace-clojure/gc-parser/data.txt"
 
 #data.gc <- read.csv(data.file,sep=',', header=TRUE)
 data.gc= read.csv(data.file,sep=',', header=TRUE)
@@ -19,7 +23,7 @@ data.gc= read.csv(data.file,sep=',', header=TRUE)
 
 #print_summary(data.gc)
 
-#computeStats(data.gc)
+computeStats(data.gc)
 
 
 

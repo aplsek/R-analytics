@@ -20,9 +20,8 @@ histo2 <- function(data.gc) {
 
 
 
+#data.gc= read.csv(data.file,sep=',', header=TRUE)
+#plotGC2(data.gc)
+#histo2(data.gc)
 
 
-
-data.gc= read.csv(data.file,sep=',', header=TRUE)
-plotGC2(data.gc)
-histo2(data.gc)
