@@ -1,5 +1,11 @@
 source("R/constants.R")
 
+## ---- Q1 ----
+
+hello<- function(h) {
+  print(h)
+}
+
 
 add <- function(value,name ) {
   headers <<- c(headers,name)
@@ -38,6 +44,12 @@ initSummary <- function() {
 }
 
 addRow <- function(row) {
-  rbind(df, row)->>df
+  rbind(df, row)->df
   #rbind(df, c("sssPause", 120))->df
+}
+
+addRow <- function(df,row) {
+  rbind(df, row)->df
+  #rbind(df, c("sssPause", 120))->df
+  return(df)
 }

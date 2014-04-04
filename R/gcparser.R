@@ -9,11 +9,22 @@ source("R/plot_functions.R")
 #####
 
 #### RUN
-data.file <- "input.txt"
+#data.file <- "input.txt"
+data.file <- "C:/Users/aplsek.ST-USERS/workspace-clojure/gc-parser/data.txt"
+
 #data.gc <- read.csv(data.file,sep=',', header=TRUE)
 data.gc= read.csv(data.file,sep=',', header=TRUE)
 
 
 
+#print_summary(data.gc)
 
-plotGC(data.gc)
+#computeStats(data.gc)
+
+
+
+#plotGC(data.gc)
+
+#plotPauseHisto(data.gc)
+
+print("Hello World")
