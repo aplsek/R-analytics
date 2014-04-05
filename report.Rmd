@@ -11,10 +11,11 @@ RunID : ```r.version ``` <br>
 source('R/constants.R')
 source('R/utils.R')
 source('R/functions.R')
+source('R/plot_functions.R')
 source('R/style.R')
 library(xtable)
 library(ggplot2)
-#suppressPackageStartupMessages(library(googleVis))
+suppressPackageStartupMessages(library(googleVis))
 ```
 
 
@@ -23,19 +24,9 @@ library(ggplot2)
 
 
 
-
+data.file <- "input.txt"
 data.gc <- read.csv(data.file,sep=',', header=TRUE)
 
-plotGC2 <- function (data.gc) {
-  main_title="GC Timeline"
-  qplot(timestamp,pause.time, main = main_title, data=data.gc, colour = gc.type)
-}
-
-histo2 <- function(data.gc) {
-  main_title="PauseTime Histogram"
-  #ggplot(data.gc, aes(x = pause.time)) + geom_histogram(binwidth = 0.25, fill = aes(colour = gc.type))
-  ggplot(data.gc, main = main_title, aes(x=pause.time, fill = gc.type)) + geom_histogram(binwidth = 0.25,alpha = 0.5, position = "identity")
-}
 ```
 
 
@@ -70,10 +61,21 @@ histo2(data.gc)
 ```
 
 
-```{r fig.width=10, fig.height=6, echo = FALSE}
-A1 <- gvisAnnotatedTimeLine(data.gc, datevar="timestamp",
-                           numvar="gc.pause", idvar="Device",
-                           titlevar="Title", annotationvar="Annotation",
-                           )
-print(A1, 'chart')
+```{r fig.width=10,results="asis", fig.height=6, echo = FALSE}
+#dd <- data.frame(v1=data.gc$timestamp,v2=data.gc$pause.time,v3=data.gc$pause.time)
+keep <- c("timestamp", "pause.time","young.occ.start")
+dd<-data.gc[keep]
+colnames(dd) <- keep
+A0 <- gvisMotionChart(dd, idvar='pause.time', timevar='timestamp')
+print(A0, 'chart')
+
+as.POSIXlt(now)
+tt < c ("timestamp")
+dd <- lapply(dd[tt], as.POSIXlt())
+
+#A1 <- gvisAnnotatedTimeLine(data.gc, datevar="timestamp",
+#                           numvar="pause.time", idvar="Device",
+#                           titlevar="Title", annotationvar="Annotation",
+#                           )
+#print(A1, 'chart')
 ```
