@@ -1,5 +1,4 @@
 <h1>GC Perf Report</h1>
-======================================================== <br>
 
 Generated: ```r.date ``` <br>
 RunID : ```r.version ``` <br>
@@ -60,6 +59,47 @@ plotGC2(data.gc)
 histo2(data.gc)
 ```
 
+<h4>OldGen Occupation</h4>>
+
+```{r fig.width=10, fig.height=6, echo = FALSE}
+sizeoldPlot(data.gc)
+```
+
+<h4>YoungGen Occupation Size</h4>>
+
+```{r fig.width=10, fig.height=6, echo = FALSE}
+sizeYoungPlot(data.gc)
+```
+
+<h4>Survivor Occupation</h4>>
+```{r fig.width=10, fig.height=6, echo = FALSE}
+survPlot(data.gc)
+```
+
+<h4>Occupation Overview</h4>>
+
+```{r fig.width=10, fig.height=6, echo = FALSE}
+occupation(data.gc)
+```
+
+<h4>Old TimeSeries</h4>
+
+```{r fig.width=10, fig.height=6, echo = FALSE}
+plotGCseriesOld(data.gc)
+```
+
+<h4>Young TimeSeries</h4>
+
+```{r fig.width=10, fig.height=6, echo = FALSE}
+plotGCseries_Young(data.gc)
+```
+
+<h4>Survivor TimeSeries</h4>
+
+```{r fig.width=10, fig.height=6, echo = FALSE}
+plotGCseries_Survivor(data.gc)
+```
+
 
 ```{r fig.width=10,results="asis", fig.height=6, echo = FALSE}
 #dd <- data.frame(v1=data.gc$timestamp,v2=data.gc$pause.time,v3=data.gc$pause.time)
@@ -69,9 +109,6 @@ colnames(dd) <- keep
 A0 <- gvisMotionChart(dd, idvar='pause.time', timevar='timestamp')
 print(A0, 'chart')
 
-as.POSIXlt(now)
-tt < c ("timestamp")
-dd <- lapply(dd[tt], as.POSIXlt())
 
 #A1 <- gvisAnnotatedTimeLine(data.gc, datevar="timestamp",
 #                           numvar="pause.time", idvar="Device",
