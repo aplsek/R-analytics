@@ -19,24 +19,24 @@ histo2 <- function(data_gc) {
 }
 
 sizeYoungPlot <- function (data_gc) {
-  main_title="GC Timeline"
+  main_title="YoungGen Occupation"
   qplot(timestamp,young.occ.start, main = main_title, data=data_gc, colour = gc.type)
 }
 
 
 sizeoldPlot <- function (data_gc) {
-  main_title="GC Timeline"
+  main_title="OldGen Occupation (old.occ.start)"
   qplot(timestamp,old.occ.start, main = main_title, data=data_gc, colour = gc.type)
 }
 
 survPlot <- function (data_gc) {
-  main_title="GC Timeline"
+  main_title="Survivor Size (survivor.start)"
   qplot(timestamp,survivor.start, main = main_title, data=data_gc)
 }
 
 
 occupation <- function (data_gc) {
-  main_title="GC Timeline"
+  main_title="Heap Areas Occupation"
   # qplot(timestamp,old.occ.start, main = main_title, data=data_gc, colour = gc.type)
   
   ggplot() +
@@ -49,7 +49,7 @@ occupation <- function (data_gc) {
 }
 
 size <- function (data_gc) {
-  main_title="GC Timeline"
+  main_title="Heap Area Sizes"
   # qplot(timestamp,old.occ.start, main = main_title, data=data_gc, colour = gc.type)
   
   ggplot() +
@@ -114,7 +114,7 @@ splitGCseries <- function(data.gc) {
 
 plotGCseries_Young <- function (data.gc) {
   dd<-splitGCseries(data.gc)
-qplot(timestamp,young, main = "test", data=dd,  geom="line")
+  qplot(timestamp,young, main = "test", data=dd,  geom="line")
   
 }
 

@@ -62,3 +62,4 @@ for (type in types ) {
 
 #color <- GC_TYPES$colors[GC_TYPES$types == "g1evac"]
 #color
+

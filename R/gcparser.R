@@ -22,32 +22,21 @@ data.file <- "data.txt"
 #data.gc <- read.csv(data.file,sep=',', header=TRUE)
 data.gc= read.csv(data.file,sep=',', header=TRUE)
 
+A <- function(x) {
+  as.POSIXlt(x, origin="2014-01-01")
+}
 
+x <- 5138.7070
+#as.POSIXct(Sys.Date())+x/1000
+ISOdatetime(2013,8,22,0,0,0) +  5138.7070/1e3
+as.POSIXct(as.numeric(ISOdatetime(2013,8,22,0,0,0)) +  34200577/1e3,  origin="1970-01-01")
 
-#print_summary(data.gc)
-
-#computeStats(data.gc)
-
-df <-statsMain(data.gc)
-#
-#df <- df[,-1,drop=FALSE]
-df
-
-dd <- as.data.frame(df)
+tt <- c ("timestamp")
+dd <-data.file
+dd <- lapply(dd[tt], A)
 dd
 
-#tab <- xtable(summary(df))
-#print(tab, type="html")
 
 
-tab1 <- gvisTable(dd, options = list(width = 600, height = 650,
-                                     page = "enable", pageSize = nrow(dd)))
-print(tab1, "chart")
-
-
-
-#plotGC(data.gc)
-
-#plotPauseHisto(data.gc)
-
-print("Hello World")
+plotGCseriesOld(data.gc)
+plotGCseries_Survivor(data.gc)
