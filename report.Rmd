@@ -1,0 +1,79 @@
+<h1>GC Perf Report</h1>
+======================================================== <br>
+
+Generated: ```r.date ``` <br>
+RunID : ```r.version ``` <br>
+
+
+
+```{r, echo = FALSE, cache=FALSE}
+
+source('R/constants.R')
+source('R/utils.R')
+source('R/functions.R')
+source('R/style.R')
+library(xtable)
+library(ggplot2)
+#suppressPackageStartupMessages(library(googleVis))
+```
+
+
+
+```{r2, echo = FALSE, cache=FALSE}
+
+
+
+
+data.gc <- read.csv(data.file,sep=',', header=TRUE)
+
+plotGC2 <- function (data.gc) {
+  main_title="GC Timeline"
+  qplot(timestamp,pause.time, main = main_title, data=data.gc, colour = gc.type)
+}
+
+histo2 <- function(data.gc) {
+  main_title="PauseTime Histogram"
+  #ggplot(data.gc, aes(x = pause.time)) + geom_histogram(binwidth = 0.25, fill = aes(colour = gc.type))
+  ggplot(data.gc, main = main_title, aes(x=pause.time, fill = gc.type)) + geom_histogram(binwidth = 0.25,alpha = 0.5, position = "identity")
+}
+```
+
+
+
+<h4>Summary</h4>
+```{r kable,results="asis", echo = FALSE}
+df <-statsMain(data.gc)
+tab <- xtable(summary(df))
+print(tab, type="html")
+```
+
+
+<h4>GC stats by type:</h4>
+```{r xtable, results="asis", echo = FALSE}
+df <-statsByGCType(data.gc)
+
+tab <- xtable(summary(df))
+print(tab, type="html")
+```
+
+<h4>GC Timeline</h4>
+You can also embed plots, for example:
+
+```{r fig.width=15, fig.height=6, echo = FALSE}
+plotGC2(data.gc)
+```
+
+<h4>Histogram</h4>>
+
+```{r fig.width=10, fig.height=6, echo = FALSE}
+histo2(data.gc)
+```
+
+
+```{r fig.width=10, fig.height=6, echo = FALSE}
+A1 <- gvisAnnotatedTimeLine(data.gc, datevar="timestamp",
+                           numvar="gc.pause", idvar="Device",
+                           titlevar="Title", annotationvar="Annotation",
+                           )
+print(A1, 'chart')
+```

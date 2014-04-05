@@ -4,7 +4,7 @@ GC analytics written in R.
 
 ## Usage
 
-FIXME
+./bin/run.sh intputFile runID
 
 ## License
 
