@@ -54,19 +54,84 @@ size <- function (data_gc) {
   
   ggplot() +
     geom_line(data = data_gc, aes(x = timestamp, y = old.size.start, color = "OldGen")) +
-    geom_line(data = data_gc, aes(x = timestamp, y = young.size.start, color = "YougnGen"))  +
+    geom_line(data = data_gc, aes(x = timestamp, y = young.size.start, color = "YoungGen"))  +
     geom_line(data = data_gc, aes(x = timestamp, y = heap.size.start, color = "Heap"))  +
     xlab('Time') +
-    ylab('Occupation [MB]')
+    ylab('Heap Sizes [MB]')
 }
 
-data.file <- "data.txt"
-data_gc= read.csv(data.file,sep=',', header=TRUE)
+#data.file <- "data.txt"
+#data_gc= read.csv(data.file,sep=',', header=TRUE)
 #plotGC2(data_gc)
 #histo2(data_gc)
 
 #sizeYoungPlot(data_gc)
 #survPlot(data_gc)
 #survivor.start(data_gc)
-occupation(data_gc)
-size(data_gc)
+#occupation(data_gc)
+#size(data_gc)
+
+
+
+splitGCseries <- function(data.gc) {
+  
+  time <- data.gc$timestamp
+  pause <- data.gc$pause.time
+  sizeYoungStart <- data.gc$young.occ.start
+  sizeYoungEnd <- data.gc$young.occ.end
+  occOldStart <- data.gc$old.occ.start
+  occOldEnd <- data.gc$old.occ.end
+  survStart <- data.gc$survivor.start
+  survEnd <- data.gc$survivor.end
+  type<- data.gc$gc.type
+  newTime <- c()
+  sizeYoung <- c()
+  occOld <- c()
+  gcType <- c()
+  surv <- c()
+  j <- 1
+  k<- 1
+  #print(time[1])
+  for (i in time) {
+    newTime[j] <- i - pause[k]
+    newTime[j+1] <- i
+    sizeYoung[j] <- sizeYoungStart[k]
+    sizeYoung[j+1] <- sizeYoungEnd[k]
+    occOld[j] <- occOldStart[k]
+    occOld[j+1] <- occOldEnd[k]
+    surv[j] <- survStart[k]
+    surv[j+1] <- survEnd[k]
+    gcType[j] <-  type[k]
+    gcType[j+1] <- type[k]
+    j <- j+2
+    k <- k +1
+  }
+  #newList
+  dd <- data.frame(v1=newTime,v2=sizeYoung, v3=occOld, v4=gcType, v5=surv)
+  colnames(dd) <- c("timestamp", "young", "old", "Type", "survivor")
+  return(dd)
+}
+
+plotGCseries_Young <- function (data.gc) {
+  dd<-splitGCseries(data.gc)
+qplot(timestamp,young, main = "test", data=dd,  geom="line")
+  
+}
+
+plotGCseries_Survivor <- function (data.gc) {
+  dd<-splitGCseries(data.gc)
+  qplot(timestamp,survivor, main = "test", data=dd,  geom="line")
+
+}
+
+
+
+plotGCseriesOld <- function (data.gc) {
+  dd<-splitGCseries(data.gc)
+  
+  #p<-qplot(timestamp,old, main = "test", data=dd, geom="line", log="y")
+  qplot(timestamp,old, main = "test", data=dd,  geom="line")
+  #p + geom_line(aes(colour = old))
+
+  #print(type[1])
+}

@@ -87,3 +87,7 @@ computeStats <- function(data.gc) {
   #statsByGCType(data.gc) 
 }
 
+
+
+
+
