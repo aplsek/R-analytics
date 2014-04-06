@@ -31,6 +31,23 @@ data.gc <- read.csv(data.file,sep=',', header=TRUE)
 
 
 <h4>Summary</h4>
+```{r rgooglevis,results="asis", echo = FALSE}
+df <-statsMain(data.gc)
+dd <- as.data.frame(df)
+tab1 <- gvisTable(dd)
+print(tab1, "chart")
+```
+
+<h4>GC stats by type:</h4>
+```{r xtable, results="asis", echo = FALSE}
+df <-statsByGCType(data.gc)
+
+dd <- as.data.frame(df)
+tab1 <- gvisTable(dd)
+print(tab1, "chart")
+```
+
+<h4>Summary</h4>
 ```{r kable,results="asis", echo = FALSE}
 df <-statsMain(data.gc)
 tab <- xtable(summary(df))
@@ -39,7 +56,7 @@ print(tab, type="html")
 
 
 <h4>GC stats by type:</h4>
-```{r xtable, results="asis", echo = FALSE}
+```{r results="asis", echo = FALSE}
 df <-statsByGCType(data.gc)
 
 tab <- xtable(summary(df))
