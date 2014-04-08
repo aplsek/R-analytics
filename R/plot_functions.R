@@ -60,6 +60,15 @@ size <- function (data_gc) {
     ylab('Heap Sizes [MB]')
 }
 
+plotLiveDataSize <- function(data_gc) {
+    main_title="LiveData Size"
+    DF <- data[,apply(data_gc, 2, function (x) grepl("ParOld-full", x))]
+    
+    #DF_full <- data_gc[gc.type == "ParOld-full"]
+    qplot(timestamp,young.occ.start, main = main_title, data=DF, colour = gc.type)
+  
+}
+
 #data.file <- "data.txt"
 #data_gc= read.csv(data.file,sep=',', header=TRUE)
 #plotGC2(data_gc)

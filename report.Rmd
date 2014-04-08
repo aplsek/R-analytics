@@ -24,6 +24,7 @@ suppressPackageStartupMessages(library(googleVis))
 
 
 data.file <- "input.txt"
+data.file <- "data-parold.txt"
 data.gc <- read.csv(data.file,sep=',', header=TRUE)
 
 ```

@@ -66,6 +66,7 @@ statsMain <- function(data.gc) {
   pause_count = int(length(pause.time)) 
   run_time=round_dec(max(timestamp, na.rm = TRUE) - min(timestamp, na.rm = TRUE))
   gc_thrpt=round_dec(total_pause*100.0/run_time)                 # Percentage of time spent in GC
+  avg_promo = round_dec(mean(promoRate, na.rm = TRUE)) 
   
   df <-addRow(df,c("PauseTime [s]", total_pause))
   df <-addRow(df,c("AvgPause [s]", avg_pause))
@@ -74,6 +75,18 @@ statsMain <- function(data.gc) {
   df <-addRow(df,c("Run Time[s]", run_time))
   df <-addRow(df,c("GC-Throughput [%]", gc_thrpt))
  
+  # TODO: fix for all different Full GCs types!!
+  full_count = int(length(gc.type[gc.type == "g1-full"])) + int(length(gc.type[gc.type == "ParOld-full"]))
+  if (full_count > 0 ) {
+    print("full GCs!")
+    df <-addRow(df,c("Full GCs", full_count))
+    
+    liveDataSize <- mean(old.occ.end[gc.type == "ParOld-full"]) 
+    df <-addRow(df,c("Avg. Live Data Size", liveDataSize))
+  }
+  
+  df <-addRow(df,c("Avg Promotion Rate [MB/s]", avg_promo))
+  
   detach(data.gc)
   #printStats(df)
   colnames(df) <- c("Stat", "Value")
