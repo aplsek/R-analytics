@@ -83,6 +83,11 @@ plotAllocationRate <- function (df) {
   
 }
 
+plotPromotionRate <- function (df) {
+  qplot(timestamp,promoRate, main = "promoRate", data=df,  geom="line")
+  
+}
+
 #data.file <- "data.txt"
 #data_gc= read.csv(data.file,sep=',', header=TRUE)
 #plotGC2(data_gc)
