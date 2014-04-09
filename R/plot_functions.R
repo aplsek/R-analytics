@@ -61,11 +61,25 @@ size <- function (data_gc) {
 }
 
 plotLiveDataSize <- function(data_gc) {
-    main_title="LiveData Size"
-    DF <- data[,apply(data_gc, 2, function (x) grepl("ParOld-full", x))]
-    
-    #DF_full <- data_gc[gc.type == "ParOld-full"]
-    qplot(timestamp,young.occ.start, main = main_title, data=DF, colour = gc.type)
+  main_title="LiveData Size"
+  attach(data.gc)
+  dd <- old.occ.end[grep("full",gc.type)]
+  time <- timestamp[grep("full",gc.type)]
+  detach(data.gc)
+  
+  names <- c("timestamp","old.occ.end")
+  df <- data.frame(v1=time,v2=dd)
+  colnames(df) <- names
+  print(df)
+  
+  #qplot(timestamp,young.occ.start, main = main_title, data=DF, colour = gc.type)
+  qplot(timestamp,old.occ.end, main = main_title, data=df, geom="line")
+  
+}
+
+
+plotAllocationRate <- function (df) {
+  qplot(timestamp,allocationRate, main = "allocationRate", data=df,  geom="line")
   
 }
 
@@ -130,8 +144,10 @@ plotGCseries_Young <- function (data.gc) {
 plotGCseries_Survivor <- function (data.gc) {
   dd<-splitGCseries(data.gc)
   qplot(timestamp,survivor, main = "test", data=dd,  geom="line")
-
+  
 }
+
+
 
 
 
@@ -141,6 +157,6 @@ plotGCseriesOld <- function (data.gc) {
   #p<-qplot(timestamp,old, main = "test", data=dd, geom="line", log="y")
   qplot(timestamp,old, main = "test", data=dd,  geom="line")
   #p + geom_line(aes(colour = old))
-
+  
   #print(type[1])
 }

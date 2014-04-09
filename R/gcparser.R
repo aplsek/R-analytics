@@ -18,15 +18,20 @@ args <- commandArgs(trailingOnly = TRUE)
 print(args)
 #data.file <- args[1]
 data.file <- "data.txt"
-data.file <- "data-parold.txt"
+data.file <- "dataParOld.txt"
 
 #data.gc <- read.csv(data.file,sep=',', header=TRUE)
 data.gc= read.csv(data.file,sep=',', header=TRUE)
+df <- allocationRate(data.gc)
 
-df<-statsMain(data.gc)
-df
+dd<-statsMain(df)
+dd
+#save(df,file="out.txt")
+write.csv(df,file="out.txt",row.names=TRUE)
 
-plotLiveDataSize(data.gc)
+#plotLiveDataSize(data.gc)
+
+plotAllocationRate(df)
 
 #df <-statsByGCType(data.gc)
 #df
