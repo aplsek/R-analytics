@@ -113,17 +113,19 @@ allocationRate <- function(data.gc) {
   prev_timestamp <- 0
   attach(data.gc)
   for (i in time) {
-    if (!is.na(young.occ.start)) {
-      rate[k] <- round_dec(((young.occ.start[k] - prev_occ_end) / (timestamp[k] - prev_timestamp)))
-      prev_timestamp <- timestamp
-      prev_occ_end <- young.occ.end 
-    } else {
+    
+    
+    if (grepl("full", gc.type[k]) || is.na(young.occ.start[k])) {
       rate[k] <- NA
+    } else {
+      rate[k] <- round_dec(((young.occ.start[k] - prev_occ_end) / (timestamp[k] - prev_timestamp)))
+      prev_timestamp <- timestamp[k]
+      prev_occ_end <- young.occ.end[k] 
     }     
     k <- k + 1
   }
   detach(data.gc)
-  #rate[1] <- 0
+  rate[1] <- NA
   
   data.gc[, "allocationRate"] <- rate
   #head(data.gc,10)

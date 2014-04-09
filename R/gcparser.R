@@ -22,16 +22,17 @@ data.file <- "dataParOld.txt"
 
 #data.gc <- read.csv(data.file,sep=',', header=TRUE)
 data.gc= read.csv(data.file,sep=',', header=TRUE)
+df <- data.gc
 df <- allocationRate(data.gc)
 
 dd<-statsMain(df)
 dd
 #save(df,file="out.txt")
-write.csv(df,file="out.txt",row.names=TRUE)
+write.csv(df,file="out.txt",row.names=FALSE)
 
 #plotLiveDataSize(data.gc)
 
 plotAllocationRate(df)
 
-#df <-statsByGCType(data.gc)
-#df
+df <-statsByGCType(data.gc)
+df
