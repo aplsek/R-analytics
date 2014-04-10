@@ -24,8 +24,9 @@ suppressPackageStartupMessages(library(googleVis))
 
 
 data.file <- "input.txt"
-data.file <- "data-parold.txt"
+data.file <- "dataParOld.txt"
 data.gc <- read.csv(data.file,sep=',', header=TRUE)
+data.gc <- computeAllocationRate(data.gc)
 
 ```
 
@@ -48,23 +49,6 @@ tab1 <- gvisTable(dd)
 print(tab1, "chart")
 ```
 
-<h4>Summary</h4>
-```{r kable,results="asis", echo = FALSE}
-df <-statsMain(data.gc)
-tab <- xtable(summary(df))
-print(tab, type="html")
-```
-
-
-<h4>GC stats by type:</h4>
-```{r results="asis", echo = FALSE}
-df <-statsByGCType(data.gc)
-
-tab <- xtable(summary(df))
-print(tab, type="html")
-```
-
-
 
 
 
@@ -80,24 +64,24 @@ histo2(data.gc)
 
 <h4>OldGen Occupation</h4>
 
-```{r fig.width=10, fig.height=6, echo = FALSE}
+```{r fig.width=15, fig.height=6, echo = FALSE}
 sizeoldPlot(data.gc)
 ```
 
 <h4>YoungGen Occupation Size</h4>
 
-```{r fig.width=10, fig.height=6, echo = FALSE}
+```{r fig.width=15, fig.height=6, echo = FALSE}
 sizeYoungPlot(data.gc)
 ```
 
 <h4>Survivor Occupation</h4>
-```{r fig.width=10, fig.height=6, echo = FALSE}
+```{r fig.width=15, fig.height=6, echo = FALSE}
 survPlot(data.gc)
 ```
 
 <h4>Occupation Overview</h4>
 
-```{r fig.width=10, fig.height=6, echo = FALSE}
+```{r fig.width=15, fig.height=6, echo = FALSE}
 occupation(data.gc)
 ```
 
@@ -106,19 +90,19 @@ occupation(data.gc)
 
 <h4>Old TimeSeries</h4>
 
-```{r fig.width=10, fig.height=6, echo = FALSE}
+```{r fig.width=15, fig.height=6, echo = FALSE}
 plotGCseriesOld(data.gc)
 ```
 
 <h4>Young TimeSeries</h4>
 
-```{r fig.width=10, fig.height=6, echo = FALSE}
+```{r fig.width=15, fig.height=6, echo = FALSE}
 plotGCseries_Young(data.gc)
 ```
 
 <h4>Survivor TimeSeries</h4>
 
-```{r fig.width=10, fig.height=6, echo = FALSE}
+```{r fig.width=15, fig.height=6, echo = FALSE}
 plotGCseries_Survivor(data.gc)
 ```
 
