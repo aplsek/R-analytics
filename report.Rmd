@@ -25,6 +25,7 @@ suppressPackageStartupMessages(library(googleVis))
 
 data.file <- "input.txt"
 data.file <- "dataParOld.txt"
+data.file <- "gc-test.txt"
 data.gc <- read.csv(data.file,sep=',', header=TRUE)
 data.gc <- computeAllocationRate(data.gc)
 
@@ -105,6 +106,23 @@ plotGCseries_Young(data.gc)
 ```{r fig.width=15, fig.height=6, echo = FALSE}
 plotGCseries_Survivor(data.gc)
 ```
+
+<h4>LiveData Size</h4>
+
+```{r, results="asis", fig.width=15, fig.height=6, echo = FALSE}
+plotLiveDataSize(data.gc)
+```
+
+<h4>Allocation Rate</h4>
+```{r, results="asis", fig.width=15, fig.height=6, echo = FALSE}
+plotAllocationRate(df)
+```
+
+<h4>Promotion Rate</h4>
+```{r, results="asis", fig.width=15, fig.height=6, echo = FALSE}
+plotPromotionRate(df)
+```
+
 
 ```{r fig.width=10,results="asis", fig.height=6, echo = FALSE}
 #dd <- data.frame(v1=data.gc$timestamp,v2=data.gc$pause.time,v3=data.gc$pause.time)
