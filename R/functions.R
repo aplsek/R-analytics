@@ -10,30 +10,15 @@ library(xtable)
 
 
 printStats <- function(df) {
-  #rownames(df) <- df[,1]
-  #  colnames(df) <- c("GCType", "CNT", "time", "Avg", "Max")
-  #df[1] <- NULL
-  #df <- df[,-1,drop=FALSE]
-  
   print(df)
-  
-  #print(xtable(df), type = "html")
 }
 
 
 printStats2 <- function() {
-  #rownames(df) <- df[,1]
-  #  colnames(df) <- c("GCType", "CNT", "time", "Avg", "Max")
-  #df[1] <- NULL
-  #df <- df[,-1,drop=FALSE]
-  
   print(df)
-  
-  # print(xtable(df), type = "html")
 }
 
 statsByGCType <- function(data.gc) {
-  #initSummary()
   df<-NULL;
   attach(data.gc)
   for (type in GC_TYPES) {
@@ -67,36 +52,31 @@ statsMain <- function(data.gc) {
   run_time=round_dec(max(timestamp, na.rm = TRUE) - min(timestamp, na.rm = TRUE))
   gc_thrpt=round_dec(total_pause*100.0/run_time)                 # Percentage of time spent in GC
   avg_promo <- round_dec(mean(promoRate, na.rm = TRUE)) 
-  
   avg_allocRate <- round_dec(mean(data.gc$allocationRate, na.rm = TRUE)) 
-  #print("alloc rate")
-  #aa <- allocationRate
-  #print(aa)
-  #avg_allocRate <- NA
   
-  df <-addRow(df,c("PauseTime [s]", total_pause))
-  df <-addRow(df,c("AvgPause [s]", avg_pause))
-  df <-addRow(df,c("MaxPause [s]", max_pause))
-  df <-addRow(df,c("#Gc-Pause", pause_count))
-  df <-addRow(df,c("Run Time[s]", run_time))
-  df <-addRow(df,c("GC-Throughput [%]", gc_thrpt))
+  df <-addRow(df,c("PauseTime [s]", total_pause, "[s]"))
+  df <-addRow(df,c("AvgPause [s]", avg_pause, "[s]"))
+  df <-addRow(df,c("MaxPause [s]", max_pause, "s"))
+  df <-addRow(df,c("#Gc-Pause", pause_count, ""))
+  df <-addRow(df,c("Run Time[s]", run_time, "[s]"))
+  df <-addRow(df,c("GC-Throughput [%]", gc_thrpt, "[%]"))
   
   full_count= int(length(gc.type[ grep("full",gc.type)]))
   if (full_count > 0 ) {
-    df <-addRow(df,c("Full GCs", full_count))
+    df <-addRow(df,c("Full GCs", full_count, ""))
     
     liveDataSize <- mean(old.occ.end[ grep("full",gc.type)]) 
     dd <- old.occ.end[grep("full",gc.type)]
     time <- timestamp[grep("full",gc.type)]
-    df <-addRow(df,c("Avg. Live Data Size [MB]", liveDataSize))
+    df <-addRow(df,c("Avg. Live Data Size [Mb]", liveDataSize, "[Mb]"))
   }
   
 
-  df <-addRow(df,c("Avg Promotion Rate [MB/s]", avg_promo))
-  df <-addRow(df,c("Avg Allocation Rate [MB/s]", avg_allocRate))
+  df <-addRow(df,c("Avg Promotion Rate [MB/s]", avg_promo, "[Mb/s]"))
+  df <-addRow(df,c("Avg Allocation Rate [MB/s]", avg_allocRate , "[Mb/s]"))
   
   detach(data.gc)
-  colnames(df) <- c("Stat", "Value")
+  colnames(df) <- c("Stat", "Value", "Metric")
   return(df)
 }
 
